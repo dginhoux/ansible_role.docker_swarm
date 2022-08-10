@@ -1,0 +1,21 @@
+---
+
+
+##
+# Docker Swarm
+##
+
+docker_swarm_inventory_manager_group_name: group_srv_swarm_manager
+docker_swarm_inventory_worker_group_name: group_srv_swarm_worker
+
+# Docker swarm network can be define in order to be sure that
+# swarm cluster doesn't overlap with you infrastructure
+# docker_swarm_network: 10.10.8.0/24
+
+# You can set any interface, that is listened by docker engine.
+# e.g. docker_swarm_interface: "eth1"
+docker_swarm_interface: "{{ ansible_default_ipv4['interface'] }}"
+docker_swarm_addr: "{{ hostvars[inventory_hostname]['ansible_' + docker_swarm_interface]['ipv4']['address'] }}"
+docker_swarm_port: 2377
+
+docker_swarm_labels: []
