@@ -1,4 +1,4 @@
-ginhouxnet.sysctl
+ginhouxnet.docker_swarm
 =========
 
 This ansible role create a swarm cluster from docker node specified in two group in ansible inventory.
