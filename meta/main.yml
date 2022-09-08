@@ -1,7 +1,7 @@
 ---
 
 galaxy_info:
-  role_name: ginhouxnet.docker_swarm
+  role_name: docker_swarm
   description: configure swarm cluster
   author: dginhoux
   company: ginhouxnet
