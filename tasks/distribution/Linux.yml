@@ -1,9 +1,6 @@
 ---
-
+- include_tasks:
+      file: tasks/sub-tasks/setup-swarm-cluster.yml
 
 - include_tasks:
-    file: tasks/sub-tasks/setup-swarm-cluster.yml
-
-
-- include_tasks:
-    file: tasks/sub-tasks/setup-swarm-labels.yml
+      file: tasks/sub-tasks/setup-swarm-labels.yml

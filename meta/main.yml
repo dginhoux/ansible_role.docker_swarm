@@ -1,5 +1,4 @@
 ---
-
 galaxy_info:
   role_name: docker_swarm
   description: configure swarm cluster
@@ -25,6 +24,5 @@ galaxy_info:
   galaxy_tags:
     - docker
     - swarm
-
 
 dependencies: []
