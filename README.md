@@ -17,7 +17,8 @@ Role Variables
 --------------
 
 Necessary variables are defined on `defaults/main.yml`
-```
+
+```yaml
 docker_swarm_inventory_manager_group_name: group_srv_swarm_manager
 docker_swarm_inventory_worker_group_name: group_srv_swarm_worker
 
@@ -36,7 +37,7 @@ docker_swarm_labels: []
 Dependencies
 ------------
 
-Docker engine need to be installed before.
+Docker engine need to be installed before
 
 
 Example Playbook
