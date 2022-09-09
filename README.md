@@ -36,7 +36,8 @@ docker_swarm_labels: []
 Dependencies
 ------------
 
-none
+Docker engine need to be installed before.
+
 
 Example Playbook
 ----------------
