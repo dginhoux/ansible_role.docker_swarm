@@ -10,13 +10,13 @@ Every nodes specified in both inventory groups (manager and worker) must be onli
 Requirements
 ------------
 
-This ansible role will only run on identified OS defined on meta/main.yml
+This role is built to only run on platforms defined in `meta/main.yml`
 
 
 Role Variables
 --------------
 
-Read defaults/main.yml
+Necessary variables are defined on `defaults/main.yml`
 ```
 docker_swarm_inventory_manager_group_name: group_srv_swarm_manager
 docker_swarm_inventory_worker_group_name: group_srv_swarm_worker
@@ -36,8 +36,7 @@ docker_swarm_labels: []
 Dependencies
 ------------
 
-
-
+none
 
 Example Playbook
 ----------------
@@ -53,4 +52,4 @@ BSD
 Author Information
 ------------------
 
-Dany GINHOUX
+https://github.com/dginhoux/
