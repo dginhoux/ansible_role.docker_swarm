@@ -10,7 +10,7 @@ Requirements
 ------------
 
 This role is built to only run on platforms defined in `meta/main.yml`.
-Docker engine need to be installed before.
+Docker engine need to be installed and running before.
 Every nodes used (manager and worker) must be online.
 
 
