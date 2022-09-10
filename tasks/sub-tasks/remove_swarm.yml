@@ -1,0 +1,21 @@
+---
+- name: remove workers nodes
+  docker_swarm:
+    state: absent
+    force: true
+    node_id: "{{ inventory_hostname }}"
+  when: inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
+
+- name: remove managers nodes
+  docker_swarm:
+    state: absent
+    force: true
+    node_id: "{{ inventory_hostname }}"
+  when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name] and inventory_hostname not in groups[docker_swarm_inventory_manager_group_name][0]
+
+- name: remove first manager node
+  docker_swarm:
+    state: absent
+    force: true
+    node_id: "{{ inventory_hostname }}"
+  when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]

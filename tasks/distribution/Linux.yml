@@ -1,80 +1,18 @@
 ---
-# - include_tasks:
-#       file: tasks/sub-tasks/setup-swarm-cluster.yml
+- name: setup swarm
+  block:
+    - name: include tasks for setup swarm
+      include_tasks:
+        file: tasks/sub-tasks/setup_swarm.yml
 
-# - include_tasks:
-#       file: tasks/sub-tasks/setup-swarm-labels.yml
-
-- block:
-    - name: setup first manager node
-      docker_swarm:
-        state: present
-        force: true
-        node_id: "{{ inventory_hostname }}"
-        # name: "{{ docker_swarm_cluster_name }}"
-        timeout: 20
-        # advertise_addr: enp0s8:2377
-        docker_host: unix://var/run/docker.sock
-        election_tick: 10
-      register: __output_swarm
-      when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
-
-    - name: setup other managers nodes
-      docker_swarm:
-        state: join
-        force: true
-        node_id: "{{ inventory_hostname }}"
-        # name: "{{ docker_swarm_cluster_name }}"
-        timeout: 20
-        # advertise_addr: enp0s8:2377
-        docker_host: unix://var/run/docker.sock
-        election_tick: 10
-        join_token: "{{ hostvars[groups[docker_swarm_inventory_manager_group_name][0]]['__output_swarm']['swarm_facts']['JoinTokens']['Manager'] }}"
-        remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
-      when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name] and inventory_hostname not in groups[docker_swarm_inventory_manager_group_name][0]
-
-    - name: setup workers nodes
-      docker_swarm:
-        state: join
-        force: true
-        node_id: "{{ inventory_hostname }}"
-        # name: "{{ docker_swarm_cluster_name }}"
-        timeout: 20
-        # advertise_addr: enp0s8:2377
-        docker_host: unix://var/run/docker.sock
-        election_tick: 10
-        join_token: "{{ hostvars[groups[docker_swarm_inventory_manager_group_name][0]]['__output_swarm']['swarm_facts']['JoinTokens']['Worker'] }}"
-        remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
-      when: inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
-
-    - name: setup labels
-      docker_node:
-        hostname: "{{ inventory_hostname }}"
-        docker_host: unix://var/run/docker.sock
-        labels_state: replace
-        labels: "{{ docker_swarm_labels }}"
-        # labels_to_remove: "{{ docker_swarm_labels_to_remove }}"
+    - name: include tasks for setup labels
+      include_tasks:
+        file: tasks/sub-tasks/setup_labels.yml
   when: docker_swarm_action == "install"
 
-- block:
-    - name: remove workers nodes
-      docker_swarm:
-        state: absent
-        force: true
-        node_id: "{{ inventory_hostname }}"
-      when: inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
-
-    - name: remove managers nodes
-      docker_swarm:
-        state: absent
-        force: true
-        node_id: "{{ inventory_hostname }}"
-      when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name] and inventory_hostname not in groups[docker_swarm_inventory_manager_group_name][0]
-
-    - name: remove first manager node
-      docker_swarm:
-        state: absent
-        force: true
-        node_id: "{{ inventory_hostname }}"
-      when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
+- name: remove swarm
+  block:
+    - name: include tasks for remove swarm
+      include_tasks:
+        file: tasks/sub-tasks/remove_swarm.yml
   when: docker_swarm_action == "uninstall"

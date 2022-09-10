@@ -8,35 +8,15 @@
 docker_swarm_inventory_manager_group_name: group_srv_pxe_manager
 docker_swarm_inventory_worker_group_name: group_srv_pxe_worker
 
-# Docker swarm network can be define in order to be sure that
-# swarm cluster doesn't overlap with you infrastructure
-# docker_swarm_network: 10.10.8.0/24
+##### PER NODES OR GLOBAL : 
+docker_swarm_labels: []
+# docker_swarm_labels:
+#   pxe: "oui"
+#   label1: "456"
+#   val: "5"
 
-# You can set any interface, that is listened by docker engine.
-# e.g. docker_swarm_interface: "eth1"
-# docker_swarm_interface: "{{ ansible_default_ipv4['interface'] }}"
-# docker_swarm_addr: "{{ hostvars[inventory_hostname]['ansible_' + docker_swarm_interface]['ipv4']['address'] }}"
-# docker_swarm_port: 2377
-
-# docker_swarm_labels: []
-
-docker_swarm_cluster_name: pxe
-
-docker_swarm_state_first_manager_node: present
-docker_swarm_state_others_managers_nodes: join
-docker_swarm_state_workers_nodes: join
-
-# docker_swarm_state_first_manager_node: remove
-# docker_swarm_state_others_managers_nodes: absent
-# docker_swarm_state_workers_nodes: absent
-
-# docker_swarm_force_mode: true
-
-docker_swarm_labels:
-  pxe: "oui"
-  label1: "456"
-  val: "5"
-
-#  docker_swarm_labels_to_remove: []
-
+##### PER NODES AND OPTIONNALS : 
+# docker_swarm_advertise_addr
+# docker_swarm_listen_addr
+# docker_swarm_docker_host
   

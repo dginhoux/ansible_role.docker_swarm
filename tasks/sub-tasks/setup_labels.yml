@@ -1,0 +1,11 @@
+---
+- name: setup labels
+  docker_node:
+    hostname: "{{ item }}"
+    docker_host: unix://var/run/docker.sock
+    labels_state: replace
+    labels: "{{ docker_swarm_labels }}"
+  delegate_to: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
+  loop: "{{ ansible_play_hosts | flatten }}"
+  run_once: true
+  when: docker_swarm_labels | length > 0

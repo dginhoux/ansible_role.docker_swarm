@@ -1,0 +1,41 @@
+---
+- name: setup first manager node
+  docker_swarm:
+    state: present
+    force: true
+    node_id: "{{ inventory_hostname }}"
+    timeout: 20
+    advertise_addr: "{{ docker_swarm_advertise_addr | default (omit) }}"
+    listen_addr: "{{ docker_swarm_listen_addr | default (omit) }}"
+    docker_host: "{{ docker_swarm_docker_host | default ('unix://var/run/docker.sock') }}"
+    election_tick: 10
+  register: __first_node_output
+  when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
+
+- name: setup other managers nodes
+  docker_swarm:
+    state: join
+    force: true
+    node_id: "{{ inventory_hostname }}"
+    timeout: 20
+    advertise_addr: "{{ docker_swarm_advertise_addr | default (omit) }}"
+    listen_addr: "{{ docker_swarm_listen_addr | default (omit) }}"
+    docker_host: "{{ docker_swarm_docker_host | default ('unix://var/run/docker.sock') }}"
+    election_tick: 10
+    join_token: "{{ hostvars[groups[docker_swarm_inventory_manager_group_name][0]]['__first_node_output']['swarm_facts']['JoinTokens']['Manager'] }}"
+    remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
+  when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name] and inventory_hostname not in groups[docker_swarm_inventory_manager_group_name][0]
+
+- name: setup workers nodes
+  docker_swarm:
+    state: join
+    force: true
+    node_id: "{{ inventory_hostname }}"
+    timeout: 20
+    advertise_addr: "{{ docker_swarm_advertise_addr | default (omit) }}"
+    listen_addr: "{{ docker_swarm_listen_addr | default (omit) }}"
+    docker_host: "{{ docker_swarm_docker_host | default ('unix://var/run/docker.sock') }}"
+    election_tick: 10
+    join_token: "{{ hostvars[groups[docker_swarm_inventory_manager_group_name][0]]['__first_node_output']['swarm_facts']['JoinTokens']['Worker'] }}"
+    remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
+  when: inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
