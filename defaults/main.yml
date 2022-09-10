@@ -9,14 +9,15 @@ docker_swarm_inventory_manager_group_name: group_srv_pxe_manager
 docker_swarm_inventory_worker_group_name: group_srv_pxe_worker
 
 ##### PER NODES OR GLOBAL : 
-docker_swarm_labels: []
-# docker_swarm_labels:
+docker_swarm_node_labels: []
+# docker_swarm_node_labels:
 #   pxe: "oui"
 #   label1: "456"
 #   val: "5"
 
 ##### PER NODES AND OPTIONNALS : 
-# docker_swarm_advertise_addr
-# docker_swarm_listen_addr
-# docker_swarm_docker_host
+# docker_swarm_node_advertise_addr
+# docker_swarm_node_listen_addr
+# docker_swarm_node_docker_host
+# docker_swarm_node_availability
   

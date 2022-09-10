@@ -8,6 +8,10 @@
     - name: include tasks for setup labels
       include_tasks:
         file: tasks/sub-tasks/setup_labels.yml
+
+    - name: include tasks for setup availability
+      include_tasks:
+        file: tasks/sub-tasks/setup_availability.yml
   when: docker_swarm_action == "install"
 
 - name: remove swarm

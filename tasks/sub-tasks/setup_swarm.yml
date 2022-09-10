@@ -5,10 +5,16 @@
     force: true
     node_id: "{{ inventory_hostname }}"
     timeout: 20
-    advertise_addr: "{{ docker_swarm_advertise_addr | default (omit) }}"
-    listen_addr: "{{ docker_swarm_listen_addr | default (omit) }}"
-    docker_host: "{{ docker_swarm_docker_host | default ('unix://var/run/docker.sock') }}"
+    advertise_addr: "{{ docker_swarm_node_advertise_addr | default (omit) }}"
+    listen_addr: "{{ docker_swarm_node_listen_addr | default ('0.0.0.0:2377') }}"
+    data_path_addr: "{{ docker_swarm_node_data_path_addr | default (omit) }}"
+    docker_host: "{{ docker_swarm_node_docker_host | default ('unix://var/run/docker.sock') }}"
     election_tick: 10
+    # heartbeat_tick: 5
+    # dispatcher_heartbeat_period: 10
+    # task_history_retention_limit: 5
+    # snapshot_interval: 10000
+    # keep_old_snapshots: 0
   register: __first_node_output
   when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
 
@@ -18,10 +24,11 @@
     force: true
     node_id: "{{ inventory_hostname }}"
     timeout: 20
-    advertise_addr: "{{ docker_swarm_advertise_addr | default (omit) }}"
-    listen_addr: "{{ docker_swarm_listen_addr | default (omit) }}"
-    docker_host: "{{ docker_swarm_docker_host | default ('unix://var/run/docker.sock') }}"
-    election_tick: 10
+    advertise_addr: "{{ docker_swarm_node_advertise_addr | default (omit) }}"
+    listen_addr: "{{ docker_swarm_node_listen_addr | default ('0.0.0.0:2377') }}"
+    data_path_addr: "{{ docker_swarm_node_data_path_addr | default (omit) }}"
+    docker_host: "{{ docker_swarm_node_docker_host | default ('unix://var/run/docker.sock') }}"
+    # election_tick: 10
     join_token: "{{ hostvars[groups[docker_swarm_inventory_manager_group_name][0]]['__first_node_output']['swarm_facts']['JoinTokens']['Manager'] }}"
     remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
   when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name] and inventory_hostname not in groups[docker_swarm_inventory_manager_group_name][0]
@@ -32,10 +39,11 @@
     force: true
     node_id: "{{ inventory_hostname }}"
     timeout: 20
-    advertise_addr: "{{ docker_swarm_advertise_addr | default (omit) }}"
-    listen_addr: "{{ docker_swarm_listen_addr | default (omit) }}"
-    docker_host: "{{ docker_swarm_docker_host | default ('unix://var/run/docker.sock') }}"
-    election_tick: 10
+    advertise_addr: "{{ docker_swarm_node_advertise_addr | default (omit) }}"
+    listen_addr: "{{ docker_swarm_node_listen_addr | default ('0.0.0.0:2377') }}"
+    data_path_addr: "{{ docker_swarm_node_data_path_addr | default (omit) }}"
+    docker_host: "{{ docker_swarm_node_docker_host | default ('unix://var/run/docker.sock') }}"
+    # election_tick: 10
     join_token: "{{ hostvars[groups[docker_swarm_inventory_manager_group_name][0]]['__first_node_output']['swarm_facts']['JoinTokens']['Worker'] }}"
     remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
   when: inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
