@@ -10,11 +10,11 @@
     data_path_addr: "{{ docker_swarm_node_data_path_addr | default (omit) }}"
     docker_host: "{{ docker_swarm_node_docker_host | default ('unix://var/run/docker.sock') }}"
     election_tick: 10
-    # heartbeat_tick: 5
-    # dispatcher_heartbeat_period: 10
-    # task_history_retention_limit: 5
-    # snapshot_interval: 10000
-    # keep_old_snapshots: 0
+    heartbeat_tick: "{{ docker_swarm_heartbeat_tick | default (omit) }}"
+    dispatcher_heartbeat_period: "{{ docker_swarm_dispatcher_heartbeat_period | default (omit) }}"
+    task_history_retention_limit: "{{ docker_swarm_task_history_retention_limit | default (omit) }}"
+    snapshot_interval: "{{ docker_swarm_snapshot_interval | default (omit) }}"
+    keep_old_snapshots: "{{ docker_swarm_keep_old_snapshots | default (omit) }}"
   register: __first_node_output
   when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
 

@@ -1,16 +1,17 @@
 Ansible Role : dginhoux.docker_swarm
 =========
 
-This ansible role create a swarm cluster from docker node specified in two group in ansible inventory.
-Docker need to be installed on the node where this roles is running.
-Every nodes specified in both inventory groups (manager and worker) must be online, above the first declared manager.
+This ansible role init, configure and remove a swarm cluster.
+Nodes have to be fitted in two groups in ansible inventory.
 
 
 
 Requirements
 ------------
 
-This role is built to only run on platforms defined in `meta/main.yml`
+This role is built to only run on platforms defined in `meta/main.yml`.
+Docker engine need to be installed before.
+Every nodes used (manager and worker) must be online.
 
 
 Role Variables
@@ -22,22 +23,33 @@ Necessary variables are defined on `defaults/main.yml`
 docker_swarm_inventory_manager_group_name: group_srv_swarm_manager
 docker_swarm_inventory_worker_group_name: group_srv_swarm_worker
 
+##### [group_vars] optionnals settings
+# docker_swarm_heartbeat_tick: 5
+# docker_swarm_dispatcher_heartbeat_period: 10
+# docker_swarm_task_history_retention_limit: 5
+# docker_swarm_snapshot_interval: 10000
+# docker_swarm_keep_old_snapshots: 0
 
-# You can set any interface, that is listened by docker engine.
-# e.g. docker_swarm_interface: "eth1"
-docker_swarm_interface: "{{ ansible_default_ipv4['interface'] }}"
-docker_swarm_addr: "{{ hostvars[inventory_hostname]['ansible_' + docker_swarm_interface]['ipv4']['address'] }}"
+##### [host_vars] or [group_vars] settings
+docker_swarm_node_docker_host: unix://var/run/docker.sock
+docker_swarm_node_labels: []
+# docker_swarm_node_labels:
+#   pxe: "oui"
+#   label1: "456"
+#   val: "5"
 
-docker_swarm_port: 2377
-
-docker_swarm_labels: []
+##### [host_vars] optionnals settings
+# docker_swarm_node_advertise_addr: 0.0.0.0:2377
+# docker_swarm_node_listen_addr: 0.0.0.0:2377
+# docker_swarm_node_availability: active OR pause OR drain
+# docker_swarm_node_role: manager OR worker
 ```
 
 
 Dependencies
 ------------
 
-Docker engine need to be installed before
+none
 
 
 Example Playbook

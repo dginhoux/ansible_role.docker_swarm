@@ -9,6 +9,10 @@
       include_tasks:
         file: tasks/sub-tasks/setup_labels.yml
 
+    - name: include tasks for setup roles
+      include_tasks:
+        file: tasks/sub-tasks/setup_roles.yml
+
     - name: include tasks for setup availability
       include_tasks:
         file: tasks/sub-tasks/setup_availability.yml

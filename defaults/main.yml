@@ -8,16 +8,24 @@
 docker_swarm_inventory_manager_group_name: group_srv_pxe_manager
 docker_swarm_inventory_worker_group_name: group_srv_pxe_worker
 
-##### PER NODES OR GLOBAL : 
+##### GLOBAL optionnals settings
+# docker_swarm_heartbeat_tick: 5
+# docker_swarm_dispatcher_heartbeat_period: 10
+# docker_swarm_task_history_retention_limit: 5
+# docker_swarm_snapshot_interval: 10000
+# docker_swarm_keep_old_snapshots: 0
+
+##### PER NODES   or  GLOBAL settings
+docker_swarm_node_docker_host: unix://var/run/docker.sock
 docker_swarm_node_labels: []
 # docker_swarm_node_labels:
 #   pxe: "oui"
 #   label1: "456"
 #   val: "5"
 
-##### PER NODES AND OPTIONNALS : 
-# docker_swarm_node_advertise_addr
-# docker_swarm_node_listen_addr
-# docker_swarm_node_docker_host
-# docker_swarm_node_availability
+##### PER NODES optionnals settings only
+# docker_swarm_node_advertise_addr: 0.0.0.0:2377
+# docker_swarm_node_listen_addr: 0.0.0.0:2377
+# docker_swarm_node_availability: active OR pause OR drain
+# docker_swarm_node_role: manager OR worker
   
