@@ -29,6 +29,8 @@ docker_swarm_inventory_worker_group_name: group_srv_swarm_worker
 # docker_swarm_task_history_retention_limit: 5
 # docker_swarm_snapshot_interval: 10000
 # docker_swarm_keep_old_snapshots: 0
+docker_swarm_subnet_size: 24
+docker_swarm_default_addr_pool: 10.0.0.0/8
 
 ##### [host_vars] or [group_vars] settings
 docker_swarm_node_docker_host: unix://var/run/docker.sock

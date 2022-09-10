@@ -5,6 +5,7 @@
     force: true
     node_id: "{{ inventory_hostname }}"
     timeout: 20
+    autolock_managers: false
     advertise_addr: "{{ docker_swarm_node_advertise_addr | default (omit) }}"
     listen_addr: "{{ docker_swarm_node_listen_addr | default ('0.0.0.0:2377') }}"
     data_path_addr: "{{ docker_swarm_node_data_path_addr | default (omit) }}"
@@ -15,8 +16,20 @@
     task_history_retention_limit: "{{ docker_swarm_task_history_retention_limit | default (omit) }}"
     snapshot_interval: "{{ docker_swarm_snapshot_interval | default (omit) }}"
     keep_old_snapshots: "{{ docker_swarm_keep_old_snapshots | default (omit) }}"
+    default_addr_pool: "{{ docker_swarm_default_addr_pool | default (omit) }}"
+    subnet_size: "{{ docker_swarm_subnet_size | default (omit) }}"
   register: __first_node_output
   when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
+
+- name: define remote_addrs if advertise_addr not defined
+  set_fact:
+    remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
+  when: "groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is not defined"
+
+- name: define remote_addrs if advertise_addr defined
+  set_fact:
+    remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] }}"
+  when: "groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is defined"
 
 - name: setup other managers nodes
   docker_swarm:
@@ -30,7 +43,8 @@
     docker_host: "{{ docker_swarm_node_docker_host | default ('unix://var/run/docker.sock') }}"
     # election_tick: 10
     join_token: "{{ hostvars[groups[docker_swarm_inventory_manager_group_name][0]]['__first_node_output']['swarm_facts']['JoinTokens']['Manager'] }}"
-    remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
+    # remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
+    remote_addrs: "{{ remote_addrs }}"
   when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name] and inventory_hostname not in groups[docker_swarm_inventory_manager_group_name][0]
 
 - name: setup workers nodes
@@ -45,5 +59,6 @@
     docker_host: "{{ docker_swarm_node_docker_host | default ('unix://var/run/docker.sock') }}"
     # election_tick: 10
     join_token: "{{ hostvars[groups[docker_swarm_inventory_manager_group_name][0]]['__first_node_output']['swarm_facts']['JoinTokens']['Worker'] }}"
-    remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
+    # remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
+    remote_addrs: "{{ remote_addrs }}"
   when: inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
