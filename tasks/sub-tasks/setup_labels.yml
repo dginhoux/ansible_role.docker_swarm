@@ -1,6 +1,6 @@
 ---
 - name: setup labels
-  docker_node:
+  community.docker.docker_node:
     hostname: "{{ item }}"
     docker_host: "{{ docker_swarm_node_docker_host | default ('unix://var/run/docker.sock') }}"
     labels_state: replace
