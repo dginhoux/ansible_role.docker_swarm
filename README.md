@@ -9,7 +9,8 @@ Nodes have to be fitted in two groups in ansible inventory.
 Requirements
 ------------
 
-This role is built to only run on platforms defined in `meta/main.yml`.
+This role require a supported platform defined in `meta/main.yml`.
+It will skip node with unsupported platform ; this behaviour can be bypassed by settings this variable `asserts_bypass=True`..
 Docker engine need to be installed and running before.
 Every nodes used (manager and worker) must be online.
 
