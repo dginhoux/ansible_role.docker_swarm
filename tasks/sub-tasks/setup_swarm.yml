@@ -22,12 +22,12 @@
   when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
 
 - name: define remote_addrs if advertise_addr not defined
-  set_fact:
+  ansible.builtin.set_fact:
     remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
   when: "groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is not defined"
 
 - name: define remote_addrs if advertise_addr defined
-  set_fact:
+  ansible.builtin.set_fact:
     remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] }}"
   when: "groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is defined"
 
