@@ -1,0 +1,26 @@
+---
+- name: setup swarm
+  block:
+    - name: include tasks for setup swarm
+      ansible.builtin.include_tasks:
+        file: tasks/sub-tasks/setup_swarm.yml
+
+    - name: include tasks for setup labels
+      ansible.builtin.include_tasks:
+        file: tasks/sub-tasks/setup_labels.yml
+
+    - name: include tasks for setup roles
+      ansible.builtin.include_tasks:
+        file: tasks/sub-tasks/setup_roles.yml
+
+    - name: include tasks for setup availability
+      ansible.builtin.include_tasks:
+        file: tasks/sub-tasks/setup_availability.yml
+  when: docker_swarm_action == "install"
+
+- name: remove swarm
+  block:
+    - name: include tasks for remove swarm
+      ansible.builtin.include_tasks:
+        file: tasks/sub-tasks/remove_swarm.yml
+  when: docker_swarm_action == "uninstall"
