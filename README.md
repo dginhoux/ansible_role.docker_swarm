@@ -1,21 +1,24 @@
-# :computer: ROLE dginhoux.docker_swarm
-
-## :scroll: DESCRIPTION
-
-This ansible role init, configure and remove a swarm cluster.
-Nodes have to be fitted in two groups in ansible inventory.
-Docker engine need to be installed and running before.
-Every nodes used (manager and worker) must be online.
+# ROLE dginhoux.docker_swarm
 
 
 
-## :nut_and_bolt: REQUIREMENTS
+## DESCRIPTION
+
+This ansible role init, configure and remove a swarm cluster.<br />
+
+
+## REQUIREMENTS
+
+Docker engine need to be installed and running before.<br />
+Every nodes used (manager and worker) must be online.<br />
+Nodes have to be fitted in two groups in ansible inventory.<br />
+
 
 #### SUPPORTED PLATFORMS
 
-This role require a supported platform. 
-It will skip node with unsupported platform to avoid any compatibility problem.
-This behaviour can be bypassed by settings this variable `asserts_bypass=True`.
+This role require a supported platform.<br />
+It will skip node with unsupported platform to avoid any compatibility problem.<br />
+This behaviour can be bypassed by settings the following variable `asserts_bypass=True`.
 
 | Platform | Versions |
 |----------|----------|
@@ -23,25 +26,23 @@ This behaviour can be bypassed by settings this variable `asserts_bypass=True`.
 | Fedora | 33, 34, 35, 36 |
 | EL | 7, 8 |
 
-
 #### ANSIBLE VERSION
 
 Ansible >= 2.12
-
 
 #### DEPENDENCIES
 
 None.
 
 
-## :inbox_tray: INSTALLATION
+
+## INSTALLATION
 
 #### ANSIBLE GALAXY
 
 ```shell
 ansible-galaxy install dginhoux.docker_swarm
 ```
-
 #### GIT
 
 ```shell
@@ -49,7 +50,7 @@ git clone https://github.com/dginhoux/ansible_role.docker_swarm dginhoux.docker_
 ```
 
 
-## :rocket: USAGE
+## USAGE
 
 #### EXAMPLE PLAYBOOK
 
@@ -59,45 +60,64 @@ git clone https://github.com/dginhoux/ansible_role.docker_swarm dginhoux.docker_
     - name: start role dginhoux.docker_swarm
       ansible.builtin.include_role:
         name: dginhoux.docker_swarm
-      vars:
-        docker_swarm_default_addr_pool: 10.0.0.0/8
-        docker_swarm_inventory_manager_group_name: group_srv_pxe_manager
-        docker_swarm_inventory_worker_group_name: group_srv_pxe_worker
-        docker_swarm_node_docker_host: unix://var/run/docker.sock
-        docker_swarm_node_labels: []
-        docker_swarm_subnet_size: 24
-        
 ```
 
 
-## :factory: VARIABLES
+## VARIABLES
+
 #### DEFAULT VARIABLES
-Role default variables from `defaults/main.yml` : 
 
-| Variable Name | Value |
-|---------------|-------|
-|docker_swarm_inventory_manager_group_name | <pre> group_srv_pxe_manager </pre> |
-|docker_swarm_inventory_worker_group_name | <pre> group_srv_pxe_worker </pre> |
-|docker_swarm_subnet_size | <pre> 24 </pre> |
-|docker_swarm_default_addr_pool | <pre> 10.0.0.0/8 </pre> |
-|docker_swarm_node_docker_host | <pre> unix://var/run/docker.sock </pre> |
-|docker_swarm_node_labels | <pre> []<br> </pre> |
+Defaults variables defined in `defaults/main.yml` : 
 
+```yaml
+##
+# Docker Swarm
+##
 
-#### CONTEXT VARIABLES
+# docker_swarm_inventory_manager_group_name: group_srv_swarm_manager
+# docker_swarm_inventory_worker_group_name: group_srv_swarm_worker
+docker_swarm_inventory_manager_group_name: group_srv_pxe_manager
+docker_swarm_inventory_worker_group_name: group_srv_pxe_worker
 
-Those variables are located in `vars/*.yml` are used to handle OS differences ; One of theses is loaded dynamically during role
-runtime using the `include_vars` module and set OS specifics variable's.
-
-
-
-
-
-## :man: AUTHOR
-
-[![Author](https://img.shields.io/badge/maintained%20by-dginhoux-e00000?style=flat-square)](https://github.com/dginhoux)
+##### GLOBAL optionnals settings
+# docker_swarm_heartbeat_tick: 5
+# docker_swarm_dispatcher_heartbeat_period: 10
+# docker_swarm_task_history_retention_limit: 5
+# docker_swarm_snapshot_interval: 10000
+# docker_swarm_keep_old_snapshots: 0
+docker_swarm_subnet_size: 24
+docker_swarm_default_addr_pool: 10.0.0.0/8
 
 
-## :bookmark_tabs: LICENSE
+##### PER NODES   or  GLOBAL settings
+docker_swarm_node_docker_host: unix://var/run/docker.sock
+docker_swarm_node_labels: []
+# docker_swarm_node_labels:
+#   pxe: "oui"
+#   label1: "456"
+#   val: "5"
 
-[![License](https://img.shields.io/github/license/dginhoux/ansible_role.docker_swarm?style=flat-square)](https://github.com/dginhoux/ansible_role.docker_swarm/blob/master/LICENSE)
+##### PER NODES optionnals settings only
+# docker_swarm_node_advertise_addr: 0.0.0.0:2377
+# docker_swarm_node_listen_addr: 0.0.0.0:2377
+# docker_swarm_node_availability: active OR pause OR drain
+# docker_swarm_node_role: manager OR worker
+```
+
+#### DEFAULT OS SPECIFIC VARIABLES
+
+Those variables files are located in `vars/*.yml` are used to handle OS differences.<br />
+One of theses is loaded dynamically during role runtime using the `include_vars` module and set OS specifics variable's.
+
+`NOT USED BY THIS ROLE`
+
+
+## AUTHOR
+
+Dany GINHOUX - https://github.com/dginhoux
+
+
+
+## LICENSE
+
+MIT
