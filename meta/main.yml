@@ -1,11 +1,8 @@
 ---
 galaxy_info:
   role_name: docker_swarm
-  description: dginhoux.docker_swarm
+  description: |
     This ansible role init, configure and remove a swarm cluster.
-    Nodes have to be fitted in two groups in ansible inventory.
-    Docker engine need to be installed and running before.
-    Every nodes used (manager and worker) must be online.
   author: Dany GINHOUX
   company: dginhoux
   license: MIT
