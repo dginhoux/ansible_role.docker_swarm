@@ -1,8 +1,8 @@
 ---
-- name: setup roles
+- name: Setup roles
   community.docker.docker_node:
     hostname: "{{ item }}"
-    docker_host: "{{ docker_swarm_node_docker_host | default ('unix://var/run/docker.sock') }}"
+    docker_host: "{{ docker_swarm_node_docker_host | default('unix://var/run/docker.sock') }}"
     role: "{{ hostvars[item]['docker_swarm_node_role'] }}"
   when: "hostvars[item]['docker_swarm_node_role'] is defined"
   delegate_to: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
