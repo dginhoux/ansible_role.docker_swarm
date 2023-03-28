@@ -2,6 +2,15 @@
 - name: Setup swarm
   when: docker_swarm_action == "install"
   block:
+    - name: Include tasks for setup bridge
+      ansible.builtin.include_tasks:
+        file: tasks/sub-tasks/setup_bridge.yml
+      when:
+        - docker_swarm_bridge_custom_subnet is defined
+        - docker_swarm_bridge_custom_subnet | ansible.utils.ipv4
+        - docker_swarm_bridge_custom_gw is defined
+        - docker_swarm_bridge_custom_gw | ansible.utils.ipaddr
+
     - name: Include tasks for setup swarm
       ansible.builtin.include_tasks:
         file: tasks/sub-tasks/setup_swarm.yml

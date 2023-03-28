@@ -1,0 +1,26 @@
+---
+
+- name: Delete docker_gwbridge
+  community.docker.docker_network:
+    name: docker_gwbridge
+    state: absent
+    force: true
+
+- name: Create docker_gwbridge
+  community.docker.docker_network:
+    name: docker_gwbridge
+    state: present
+    scope: local
+    driver: bridge
+    internal: false
+    attachable: false
+    enable_ipv6: false
+    force: true
+    ipam_driver: default
+    ipam_config:
+      - subnet: "{{ docker_swarm_bridge_custom_subnet }}"
+        gateway: "{{ docker_swarm_bridge_custom_gw }}"
+    driver_options:
+      com.docker.network.bridge.name: docker_gwbridge
+      com.docker.network.bridge.enable_icc: false
+      com.docker.network.bridge.enable_ip_masquerade: true

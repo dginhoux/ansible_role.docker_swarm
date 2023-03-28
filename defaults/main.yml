@@ -8,6 +8,9 @@
 docker_swarm_inventory_manager_group_name: group_srv_pxe_manager
 docker_swarm_inventory_worker_group_name: group_srv_pxe_worker
 
+docker_swarm_bridge_custom_subnet: 192.168.192.0/23
+docker_swarm_bridge_custom_gw: 192.168.192.1
+
 ##### GLOBAL optionnals settings
 # docker_swarm_heartbeat_tick: 5
 # docker_swarm_dispatcher_heartbeat_period: 10
@@ -31,4 +34,3 @@ docker_swarm_node_labels: []
 # docker_swarm_node_listen_addr: 0.0.0.0:2377
 # docker_swarm_node_availability: active OR pause OR drain
 # docker_swarm_node_role: manager OR worker
-  
