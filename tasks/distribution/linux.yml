@@ -1,15 +1,17 @@
 ---
-- name: Setup swarm
-  when: docker_swarm_action == "install"
+- name: Enable swarm
+  tags:
+    - enable
+  when: docker_swarm_action == "enable"
   block:
     - name: Include tasks for setup bridge
-      ansible.builtin.include_tasks:
-        file: tasks/sub-tasks/setup_bridge.yml
       when:
         - docker_swarm_bridge_custom_subnet is defined
         - docker_swarm_bridge_custom_subnet | ansible.utils.ipv4
         - docker_swarm_bridge_custom_gw is defined
         - docker_swarm_bridge_custom_gw | ansible.utils.ipaddr
+      ansible.builtin.include_tasks:
+        file: tasks/sub-tasks/setup_bridge.yml
 
     - name: Include tasks for setup swarm
       ansible.builtin.include_tasks:
@@ -27,9 +29,11 @@
       ansible.builtin.include_tasks:
         file: tasks/sub-tasks/setup_availability.yml
 
-- name: Remove swarm
-  when: docker_swarm_action == "uninstall"
+- name: Disable swarm
+  tags:
+    - disable
+  when: docker_swarm_action == "disable"
   block:
     - name: Include tasks for remove swarm
       ansible.builtin.include_tasks:
-        file: tasks/sub-tasks/remove_swarm.yml
+        file: tasks/sub-tasks/disable_swarm.yml

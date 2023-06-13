@@ -1,31 +1,29 @@
 ---
 - name: Remove workers nodes
+  when: inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
   community.docker.docker_swarm:
     state: absent
     force: true
     node_id: "{{ inventory_hostname }}"
-  when: inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
 
 - name: Remove managers nodes
+  when:
+    - inventory_hostname in groups[docker_swarm_inventory_manager_group_name]
+    - inventory_hostname not in groups[docker_swarm_inventory_manager_group_name][0]
   community.docker.docker_swarm:
     state: absent
     force: true
     node_id: "{{ inventory_hostname }}"
-  when: >
-        inventory_hostname in groups[docker_swarm_inventory_manager_group_name]
-        and
-        inventory_hostname not in groups[docker_swarm_inventory_manager_group_name][0]
 
 - name: Remove first manager node
+  when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
   community.docker.docker_swarm:
     state: absent
     force: true
     node_id: "{{ inventory_hostname }}"
-  when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
 
 - name: Delete docker_gwbridge
   community.docker.docker_network:
     name: docker_gwbridge
     state: absent
     force: true
-
