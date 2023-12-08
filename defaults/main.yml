@@ -5,10 +5,10 @@
 
 docker_swarm_action: enable
 
-# docker_swarm_inventory_manager_group_name: group_srv_swarm_manager
-# docker_swarm_inventory_worker_group_name: group_srv_swarm_worker
-docker_swarm_inventory_manager_group_name: group_srv_pxe_manager
-docker_swarm_inventory_worker_group_name: group_srv_pxe_worker
+# docker_swarm_inventory_manager_group_name: group_swarm_manager
+# docker_swarm_inventory_worker_group_name: group_swarm_worker
+docker_swarm_inventory_manager_group_name: group_pxe_manager
+docker_swarm_inventory_worker_group_name: group_pxe_worker
 
 docker_swarm_bridge_custom_subnet: 192.168.192.0/23
 docker_swarm_bridge_custom_gw: 192.168.192.1

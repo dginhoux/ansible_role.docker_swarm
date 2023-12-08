@@ -70,10 +70,10 @@ Defaults variables defined in `defaults/main.yml` :
 ##
 # Docker Swarm
 ##
-# docker_swarm_inventory_manager_group_name: group_srv_swarm_manager
-# docker_swarm_inventory_worker_group_name: group_srv_swarm_worker
-docker_swarm_inventory_manager_group_name: group_srv_pxe_manager
-docker_swarm_inventory_worker_group_name: group_srv_pxe_worker
+# docker_swarm_inventory_manager_group_name: group_swarm_manager
+# docker_swarm_inventory_worker_group_name: group_swarm_worker
+docker_swarm_inventory_manager_group_name: group_pxe_manager
+docker_swarm_inventory_worker_group_name: group_pxe_worker
 
 ##### GLOBAL optionnals settings
 # docker_swarm_heartbeat_tick: 5
