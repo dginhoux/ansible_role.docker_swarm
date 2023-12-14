@@ -1,6 +1,8 @@
 ---
 - name: Setup roles
-  when: "hostvars[item]['docker_swarm_node_role'] is defined"
+  become: true
+  when: 
+    - hostvars[item]['docker_swarm_node_role'] is defined
   delegate_to: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
   loop: "{{ ansible_play_hosts | flatten }}"
   run_once: true

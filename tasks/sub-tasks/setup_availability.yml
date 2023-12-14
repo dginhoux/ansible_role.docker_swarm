@@ -1,5 +1,6 @@
 ---
 - name: Setup availability
+  become: true
   community.docker.docker_node:
     hostname: "{{ item }}"
     docker_host: "{{ docker_swarm_node_docker_host | default('unix://var/run/docker.sock') }}"

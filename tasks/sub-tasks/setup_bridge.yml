@@ -1,12 +1,14 @@
 ---
 
 - name: Delete docker_gwbridge
+  become: true
   community.docker.docker_network:
     name: docker_gwbridge
     state: absent
     force: true
 
 - name: Create docker_gwbridge
+  become: true
   community.docker.docker_network:
     name: docker_gwbridge
     state: present

@@ -1,7 +1,9 @@
 ---
 - name: Setup first manager node
+  become: true
   register: __first_node_output
-  when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
+  when:
+    - inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
   community.docker.docker_swarm:
     state: present
     force: true
@@ -22,16 +24,19 @@
     subnet_size: "{{ docker_swarm_subnet_size | default(omit) }}"
 
 - name: Define remote_addrs if advertise_addr not defined
-  when: "groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is not defined"
+  when: 
+    - groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is not defined
   ansible.builtin.set_fact:
     remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
 
 - name: Define remote_addrs if advertise_addr defined
-  when: "groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is defined"
+  when:
+    - groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is defined
   ansible.builtin.set_fact:
     remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] }}"
 
 - name: Setup other managers nodes
+  become: true
   when:
     - inventory_hostname in groups[docker_swarm_inventory_manager_group_name]
     - inventory_hostname not in groups[docker_swarm_inventory_manager_group_name][0]
@@ -50,7 +55,9 @@
     remote_addrs: "{{ remote_addrs }}"
 
 - name: Setup workers nodes
-  when: inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
+  become: true
+  when:
+    - inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
   community.docker.docker_swarm:
     state: join
     force: true
