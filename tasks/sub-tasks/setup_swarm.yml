@@ -24,7 +24,7 @@
     subnet_size: "{{ docker_swarm_subnet_size | default(omit) }}"
 
 - name: Define remote_addrs if advertise_addr not defined
-  when: 
+  when:
     - groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is not defined
   ansible.builtin.set_fact:
     remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
