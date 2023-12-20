@@ -52,9 +52,10 @@ git clone https://github.com/dginhoux/ansible_role.docker_swarm dginhoux.docker_
 #### EXAMPLE PLAYBOOK
 
 ```yaml
-- hosts: all
-  roles:
-    - name: start role dginhoux.docker_swarm
+- name: Playbook
+  hosts: all
+  tasks:
+    - name: Start role dginhoux.docker_swarm
       ansible.builtin.include_role:
         name: dginhoux.docker_swarm
 ```
@@ -64,7 +65,9 @@ git clone https://github.com/dginhoux/ansible_role.docker_swarm dginhoux.docker_
 
 #### DEFAULT VARIABLES
 
-Defaults variables defined in `defaults/main.yml` : 
+Defaults variables defined in `defaults/main.yml`
+
+#### EXAMPLES VARIABLES
 
 ```yaml
 ##
