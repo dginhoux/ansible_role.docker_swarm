@@ -1,4 +1,34 @@
 ---
+- name: Remove stacks
+  become: true
+  register: stack_rm
+  when: inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
+  run_once: true
+  ansible.builtin.shell:
+    for stack in $( docker stack ls --format "{% raw %}{{ .Name }}{% endraw %}" ); do
+      docker stack rm $stack;
+      sleep 2;
+    done;
+    sleep 2;
+
+- name: Remove stacks
+  when:
+    - stack_rm.stdout_lines is defined
+    - stack_rm.stdout_lines is iterable
+  ansible.builtin.debug:
+    msg: "{{ stack_rm.stdout_lines }}"
+
+- name: Docker prune
+  community.docker.docker_prune:
+    containers: "yes"
+    images: "yes"
+    images_filters:
+      dangling: "false"
+    networks: "yes"
+    volumes: "yes"
+    builder_cache: "yes"
+    timeout: 180
+
 - name: Remove workers nodes
   become: true
   when: inventory_hostname in groups[docker_swarm_inventory_worker_group_name]

@@ -1,38 +1,59 @@
 ---
-##
-# Docker Swarm
-##
 
 docker_swarm_action: enable
 
-# docker_swarm_inventory_manager_group_name: group_swarm_manager
-# docker_swarm_inventory_worker_group_name: group_swarm_worker
+
+##### define inventory groups for identify manager and worker nodes
 docker_swarm_inventory_manager_group_name: group_pxe_manager
 docker_swarm_inventory_worker_group_name: group_pxe_worker
 
+
+##### bridge configuration
 docker_swarm_bridge_custom_subnet: 192.168.192.0/23
 docker_swarm_bridge_custom_gw: 192.168.192.1
 
-##### GLOBAL optionnals settings
-# docker_swarm_heartbeat_tick: 5
-# docker_swarm_dispatcher_heartbeat_period: 10
-# docker_swarm_task_history_retention_limit: 5
-# docker_swarm_snapshot_interval: 10000
-# docker_swarm_keep_old_snapshots: 0
-docker_swarm_subnet_size: 24
-docker_swarm_default_addr_pool: 10.0.0.0/8
+
+#### nodes labels)
+docker_swarm_labels: []
 
 
-##### PER NODES   or  GLOBAL settings
-docker_swarm_node_docker_host: unix://var/run/docker.sock
-docker_swarm_node_labels: []
-# docker_swarm_node_labels:
-#   pxe: "oui"
-#   label1: "456"
-#   val: "5"
+##### node availability (active, drain, pause)
+docker_swarm_availability: active
 
-##### PER NODES optionnals settings only
-# docker_swarm_node_advertise_addr: 0.0.0.0:2377
-# docker_swarm_node_listen_addr: 0.0.0.0:2377
-# docker_swarm_node_availability: active OR pause OR drain
-# docker_swarm_node_role: manager OR worker
+
+##### cluster and nodes variables
+##
+## read : https://docs.ansible.com/ansible/latest/collections/community/docker/docker_swarm_module.html
+##
+# docker_swarm_advertise_addr
+# docker_swarm_api_version
+# docker_swarm_autolock_managers
+# docker_swarm_ca_force_rotate
+# docker_swarm_ca_path
+# docker_swarm_client_cert
+# docker_swarm_client_key
+# docker_swarm_data_path_addr
+# docker_swarm_data_path_port
+# docker_swarm_default_addr_pool
+# docker_swarm_dispatcher_heartbeat_period
+# docker_swarm_docker_host
+docker_swarm_election_tick: 10
+# docker_swarm_heartbeat_tick
+# docker_swarm_keep_old_snapshots
+# docker_swarm_listen_addr
+# docker_swarm_log_entries_for_slow_followers
+# docker_swarm_name
+# docker_swarm_node_cert_expiry
+# docker_swarm_rotate_manager_token
+# docker_swarm_rotate_worker_token
+# docker_swarm_signing_ca_cert
+# docker_swarm_signing_ca_key
+# docker_swarm_snapshot_interval
+# docker_swarm_ssl_version
+# docker_swarm_subnet_size
+# docker_swarm_task_history_retention_limit
+docker_swarm_timeout: 20
+# docker_swarm_tls
+# docker_swarm_tls_hostname
+# docker_swarm_use_ssh_client
+# docker_swarm_validate_certs

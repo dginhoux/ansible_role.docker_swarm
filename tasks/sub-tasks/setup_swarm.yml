@@ -1,39 +1,61 @@
 ---
+
 - name: Setup first manager node
   become: true
   register: __first_node_output
   when:
     - inventory_hostname in groups[docker_swarm_inventory_manager_group_name][0]
   community.docker.docker_swarm:
-    state: present
-    force: true
-    node_id: "{{ inventory_hostname }}"
-    timeout: 20
-    autolock_managers: false
-    advertise_addr: "{{ docker_swarm_node_advertise_addr | default(omit) }}"
-    listen_addr: "{{ docker_swarm_node_listen_addr | default('0.0.0.0:2377') }}"
-    data_path_addr: "{{ docker_swarm_node_data_path_addr | default(omit) }}"
-    docker_host: "{{ docker_swarm_node_docker_host | default('unix://var/run/docker.sock') }}"
-    election_tick: 10
-    heartbeat_tick: "{{ docker_swarm_heartbeat_tick | default(omit) }}"
-    dispatcher_heartbeat_period: "{{ docker_swarm_dispatcher_heartbeat_period | default(omit) }}"
-    task_history_retention_limit: "{{ docker_swarm_task_history_retention_limit | default(omit) }}"
-    snapshot_interval: "{{ docker_swarm_snapshot_interval | default(omit) }}"
-    keep_old_snapshots: "{{ docker_swarm_keep_old_snapshots | default(omit) }}"
+    advertise_addr: "{{ docker_swarm_advertise_addr | default(omit) }}"
+    api_version: "{{ docker_swarm_api_version | default(omit) }}"
+    autolock_managers: "{{ docker_swarm_autolock_managers | default(omit) }}"
+    ca_force_rotate: "{{ docker_swarm_ca_force_rotate | default(omit) }}"
+    ca_path: "{{ docker_swarm_ca_path | default(omit) }}"
+    client_cert: "{{ docker_swarm_client_cert | default(omit) }}"
+    client_key: "{{ docker_swarm_client_key | default(omit) }}"
+    data_path_addr: "{{ docker_swarm_data_path_addr | default(omit) }}"
+    data_path_port: "{{ docker_swarm_data_path_port | default(omit) }}"
     default_addr_pool: "{{ docker_swarm_default_addr_pool | default(omit) }}"
+    dispatcher_heartbeat_period: "{{ docker_swarm_dispatcher_heartbeat_period | default(omit) }}"
+    docker_host: "{{ docker_swarm_docker_host | default('unix://var/run/docker.sock') }}"
+    election_tick: "{{ docker_swarm_election_tick | default(omit) }}"
+    force: true
+    heartbeat_tick: "{{ docker_swarm_heartbeat_tick | default(omit) }}"
+    keep_old_snapshots: "{{ docker_swarm_keep_old_snapshots | default(omit) }}"
+    listen_addr: "{{ docker_swarm_listen_addr | default('0.0.0.0:2377') }}"
+    log_entries_for_slow_followers: "{{ docker_swarm_log_entries_for_slow_followers | default(omit) }}"
+    name: "{{ docker_swarm_name | default(omit) }}"
+    node_cert_expiry: "{{ docker_swarm_node_cert_expiry | default('7776000000000000') }}"
+    node_id: "{{ inventory_hostname }}"
+    rotate_manager_token: "{{ docker_swarm_rotate_manager_token | default(omit) }}"
+    rotate_worker_token: "{{ docker_swarm_rotate_worker_token | default(omit) }}"
+    signing_ca_cert: "{{ docker_swarm_signing_ca_cert | default(omit) }}"
+    signing_ca_key: "{{ docker_swarm_signing_ca_key | default(omit) }}"
+    snapshot_interval: "{{ docker_swarm_snapshot_interval | default(omit) }}"
+    ssl_version: "{{ docker_swarm_ssl_version | default(omit) }}"
+    state: present
     subnet_size: "{{ docker_swarm_subnet_size | default(omit) }}"
+    task_history_retention_limit: "{{ docker_swarm_task_history_retention_limit | default(omit) }}"
+    timeout: "{{ docker_swarm_timeout | default(omit) }}"
+    tls: "{{ docker_swarm_tls | default(omit) }}"
+    tls_hostname: "{{ docker_swarm_tls_hostname | default(omit) }}"
+    use_ssh_client: "{{ docker_swarm_use_ssh_client | default(omit) }}"
+    validate_certs: "{{ docker_swarm_validate_certs | default(omit) }}"
+
 
 - name: Define remote_addrs if advertise_addr not defined
   when:
-    - groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is not defined
+    - groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_advertise_addr'] is not defined
   ansible.builtin.set_fact:
     remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
 
+
 - name: Define remote_addrs if advertise_addr defined
   when:
-    - groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] is defined
+    - groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_advertise_addr'] is defined
   ansible.builtin.set_fact:
-    remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_node_advertise_addr'] }}"
+    remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0]['docker_swarm_advertise_addr'] }}"
+
 
 - name: Setup other managers nodes
   become: true
@@ -41,33 +63,84 @@
     - inventory_hostname in groups[docker_swarm_inventory_manager_group_name]
     - inventory_hostname not in groups[docker_swarm_inventory_manager_group_name][0]
   community.docker.docker_swarm:
-    state: join
+    advertise_addr: "{{ docker_swarm_advertise_addr | default(omit) }}"
+    api_version: "{{ docker_swarm_api_version | default(omit) }}"
+    # autolock_managers: "{{ docker_swarm_autolock_managers | default(omit) }}"
+    ca_force_rotate: "{{ docker_swarm_ca_force_rotate | default(omit) }}"
+    ca_path: "{{ docker_swarm_ca_path | default(omit) }}"
+    client_cert: "{{ docker_swarm_client_cert | default(omit) }}"
+    client_key: "{{ docker_swarm_client_key | default(omit) }}"
+    data_path_addr: "{{ docker_swarm_data_path_addr | default(omit) }}"
+    data_path_port: "{{ docker_swarm_data_path_port | default(omit) }}"
+    # default_addr_pool: "{{ docker_swarm_default_addr_pool | default(omit) }}"
+    # dispatcher_heartbeat_period: "{{ docker_swarm_dispatcher_heartbeat_period | default(omit) }}"
+    docker_host: "{{ docker_swarm_docker_host | default('unix://var/run/docker.sock') }}"
+    # election_tick: "{{ docker_swarm_election_tick | default(omit) }}"
     force: true
-    node_id: "{{ inventory_hostname }}"
-    timeout: 20
-    advertise_addr: "{{ docker_swarm_node_advertise_addr | default(omit) }}"
-    listen_addr: "{{ docker_swarm_node_listen_addr | default('0.0.0.0:2377') }}"
-    data_path_addr: "{{ docker_swarm_node_data_path_addr | default(omit) }}"
-    docker_host: "{{ docker_swarm_node_docker_host | default('unix://var/run/docker.sock') }}"
-    # election_tick: 10
+    # heartbeat_tick: "{{ docker_swarm_heartbeat_tick | default(omit) }}"
+    # keep_old_snapshots: "{{ docker_swarm_keep_old_snapshots | default(omit) }}"
     join_token: "{{ hostvars[groups[docker_swarm_inventory_manager_group_name][0]]['__first_node_output']['swarm_facts']['JoinTokens']['Manager'] }}"
-    # remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
+    listen_addr: "{{ docker_swarm_listen_addr | default('0.0.0.0:2377') }}"
+    # log_entries_for_slow_followers: "{{ docker_swarm_log_entries_for_slow_followers | default(omit) }}"
+    # name: "{{ docker_swarm_name | default(omit) }}"
+    node_cert_expiry: "{{ docker_swarm_node_cert_expiry | default('7776000000000000') }}"
+    node_id: "{{ inventory_hostname }}"
     remote_addrs: "{{ remote_addrs }}"
+    # rotate_manager_token: "{{ docker_swarm_rotate_manager_token | default(omit) }}"
+    # rotate_worker_token: "{{ docker_swarm_rotate_worker_token | default(omit) }}"
+    signing_ca_cert: "{{ docker_swarm_signing_ca_cert | default(omit) }}"
+    signing_ca_key: "{{ docker_swarm_signing_ca_key | default(omit) }}"
+    snapshot_interval: "{{ docker_swarm_snapshot_interval | default(omit) }}"
+    ssl_version: "{{ docker_swarm_ssl_version | default(omit) }}"
+    state: join
+    # subnet_size: "{{ docker_swarm_subnet_size | default(omit) }}"
+    # task_history_retention_limit: "{{ docker_swarm_task_history_retention_limit | default(omit) }}"
+    timeout: "{{ docker_swarm_timeout | default(omit) }}"
+    tls: "{{ docker_swarm_tls | default(omit) }}"
+    tls_hostname: "{{ docker_swarm_tls_hostname | default(omit) }}"
+    use_ssh_client: "{{ docker_swarm_use_ssh_client | default(omit) }}"
+    validate_certs: "{{ docker_swarm_validate_certs | default(omit) }}"
+
 
 - name: Setup workers nodes
   become: true
   when:
     - inventory_hostname in groups[docker_swarm_inventory_worker_group_name]
   community.docker.docker_swarm:
-    state: join
+    advertise_addr: "{{ docker_swarm_advertise_addr | default(omit) }}"
+    api_version: "{{ docker_swarm_api_version | default(omit) }}"
+    # autolock_managers: "{{ docker_swarm_autolock_managers | default(omit) }}"
+    ca_force_rotate: "{{ docker_swarm_ca_force_rotate | default(omit) }}"
+    ca_path: "{{ docker_swarm_ca_path | default(omit) }}"
+    client_cert: "{{ docker_swarm_client_cert | default(omit) }}"
+    client_key: "{{ docker_swarm_client_key | default(omit) }}"
+    data_path_addr: "{{ docker_swarm_data_path_addr | default(omit) }}"
+    data_path_port: "{{ docker_swarm_data_path_port | default(omit) }}"
+    # default_addr_pool: "{{ docker_swarm_default_addr_pool | default(omit) }}"
+    # dispatcher_heartbeat_period: "{{ docker_swarm_dispatcher_heartbeat_period | default(omit) }}"
+    docker_host: "{{ docker_swarm_docker_host | default('unix://var/run/docker.sock') }}"
+    # election_tick: "{{ docker_swarm_election_tick | default(omit) }}"
     force: true
-    node_id: "{{ inventory_hostname }}"
-    timeout: 20
-    advertise_addr: "{{ docker_swarm_node_advertise_addr | default(omit) }}"
-    listen_addr: "{{ docker_swarm_node_listen_addr | default('0.0.0.0:2377') }}"
-    data_path_addr: "{{ docker_swarm_node_data_path_addr | default(omit) }}"
-    docker_host: "{{ docker_swarm_node_docker_host | default('unix://var/run/docker.sock') }}"
-    # election_tick: 10
+    # heartbeat_tick: "{{ docker_swarm_heartbeat_tick | default(omit) }}"
+    # keep_old_snapshots: "{{ docker_swarm_keep_old_snapshots | default(omit) }}"
     join_token: "{{ hostvars[groups[docker_swarm_inventory_manager_group_name][0]]['__first_node_output']['swarm_facts']['JoinTokens']['Worker'] }}"
-    # remote_addrs: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
+    listen_addr: "{{ docker_swarm_listen_addr | default('0.0.0.0:2377') }}"
+    # log_entries_for_slow_followers: "{{ docker_swarm_log_entries_for_slow_followers | default(omit) }}"
+    # name: "{{ docker_swarm_name | default(omit) }}"
+    node_cert_expiry: "{{ docker_swarm_node_cert_expiry | default('7776000000000000') }}"
+    node_id: "{{ inventory_hostname }}"
     remote_addrs: "{{ remote_addrs }}"
+    # rotate_manager_token: "{{ docker_swarm_rotate_manager_token | default(omit) }}"
+    # rotate_worker_token: "{{ docker_swarm_rotate_worker_token | default(omit) }}"
+    signing_ca_cert: "{{ docker_swarm_signing_ca_cert | default(omit) }}"
+    signing_ca_key: "{{ docker_swarm_signing_ca_key | default(omit) }}"
+    snapshot_interval: "{{ docker_swarm_snapshot_interval | default(omit) }}"
+    ssl_version: "{{ docker_swarm_ssl_version | default(omit) }}"
+    state: join
+    # subnet_size: "{{ docker_swarm_subnet_size | default(omit) }}"
+    # task_history_retention_limit: "{{ docker_swarm_task_history_retention_limit | default(omit) }}"
+    timeout: "{{ docker_swarm_timeout | default(omit) }}"
+    tls: "{{ docker_swarm_tls | default(omit) }}"
+    tls_hostname: "{{ docker_swarm_tls_hostname | default(omit) }}"
+    use_ssh_client: "{{ docker_swarm_use_ssh_client | default(omit) }}"
+    validate_certs: "{{ docker_swarm_validate_certs | default(omit) }}"

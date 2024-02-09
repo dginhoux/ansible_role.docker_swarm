@@ -2,13 +2,13 @@
 - name: Setup labels
   become: true
   when:
-    - docker_swarm_node_labels is defined
-    - docker_swarm_node_labels | length > 0
+    - docker_swarm_labels is defined
+    - docker_swarm_labels | length > 0
   delegate_to: "{{ groups[docker_swarm_inventory_manager_group_name][0] }}"
   loop: "{{ ansible_play_hosts | flatten }}"
   run_once: true
   community.docker.docker_node:
     hostname: "{{ item }}"
-    docker_host: "{{ docker_swarm_node_docker_host | default('unix://var/run/docker.sock') }}"
+    docker_host: "{{ docker_swarm_docker_host | default('unix://var/run/docker.sock') }}"
     labels_state: replace
-    labels: "{{ docker_swarm_node_labels }}"
+    labels: "{{ docker_swarm_labels }}"
