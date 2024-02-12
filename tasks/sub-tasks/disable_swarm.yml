@@ -21,11 +21,11 @@
 - name: Docker prune
   community.docker.docker_prune:
     containers: "yes"
-    images: "yes"
-    images_filters:
-      dangling: "false"
+    # images: "yes"
+    # images_filters:
+    #   dangling: "false"
     networks: "yes"
-    volumes: "yes"
+    # volumes: "yes"
     builder_cache: "yes"
     timeout: 180
 
