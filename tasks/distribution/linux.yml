@@ -2,7 +2,9 @@
 - name: Enable swarm
   tags:
     - enable
-  when: docker_swarm_action == "enable"
+  when:
+  
+    - docker_swarm_action == "enable"
   block:
     - name: Include tasks for setup bridge
       when:
@@ -32,7 +34,8 @@
 - name: Disable swarm
   tags:
     - disable
-  when: docker_swarm_action == "disable"
+  when:
+    - docker_swarm_action == "disable"
   block:
     - name: Include tasks for remove swarm
       ansible.builtin.include_tasks:
