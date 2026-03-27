@@ -9,9 +9,9 @@
     - name: Include tasks for setup bridge
       when:
         - docker_swarm_bridge_custom_subnet is defined
-        - docker_swarm_bridge_custom_subnet | ansible.utils.ipv4
+        # - docker_swarm_bridge_custom_subnet | ansible.utils.ipv4
         - docker_swarm_bridge_custom_gw is defined
-        - docker_swarm_bridge_custom_gw | ansible.utils.ipaddr
+        # - docker_swarm_bridge_custom_gw | ansible.utils.ipaddr
       ansible.builtin.include_tasks:
         file: tasks/sub-tasks/setup_bridge.yml
 
